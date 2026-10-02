@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SecurityEvent",
+  "description": "Canonical CyberStream security event schema. The generator emits this; Spark validates against it before normalization; the backend documents it in the OpenAPI schema.",
+  "type": "object",
+  "required": [
+    "event_id", "timestamp", "event_type", "category",
+    "source_ip", "destination_ip", "source_port", "destination_port",
+    "protocol", "username", "hostname", "action", "status",
+    "bytes_in", "bytes_out", "country", "metadata"
+  ],
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^evt-[A-Za-z0-9]{10,32}$"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "login_success", "login_failed", "logout", "password_change", "account_locked",
+        "connection", "dns_query", "firewall_allow", "firewall_deny", "port_scan",
+        "process_created", "process_terminated", "file_created", "file_modified", "file_deleted",
+        "privilege_escalation", "group_modified", "account_created", "account_deleted",
+        "cloud_login", "api_call", "permission_change",
+        "http_request", "http_error", "suspicious_request"
+      ]
+    },
+    "category": {
+      "type": "string",
+      "enum": ["authentication", "network", "endpoint", "privilege", "cloud", "web"]
+    },
+    "source_ip": {"type": "string"},
+    "destination_ip": {"type": "string"},
+    "source_port": {"type": "integer", "minimum": 0, "maximum": 65535},
+    "destination_port": {"type": "integer", "minimum": 0, "maximum": 65535},
+    "protocol": {"type": "string", "enum": ["TCP", "UDP", "ICMP", "HTTP", "HTTPS", "DNS"]},
+    "username": {"type": ["string", "null"]},
+    "hostname": {"type": "string"},
+    "action": {"type": "string"},
+    "status": {"type": "string", "enum": ["success", "failure", "unknown"]},
+    "bytes_in": {"type": "integer", "minimum": 0},
+    "bytes_out": {"type": "integer", "minimum": 0},
+    "country": {"type": "string", "minLength": 2, "maxLength": 2},
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": false
+}

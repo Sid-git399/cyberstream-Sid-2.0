@@ -1,0 +1,60 @@
+# CyberStream detection engine configuration.
+#
+# Every field here is validated against streaming/src/detection/config.py's
+# Pydantic models at load time (strict: unknown keys raise an error rather
+# than being silently ignored). severity/risk_points express the cahier
+# des charges §27 initial scoring model as configuration, not hardcoded
+# rule logic - Phase E (Risk Scoring) will sum risk_points across
+# co-occurring detections; that summation logic doesn't exist yet.
+#
+# window_seconds must be expressible as a whole number of seconds -
+# rules convert it to a Spark interval literal ("N seconds") themselves.
+
+brute_force:
+  enabled: true
+  failed_attempts: 10
+  window_seconds: 300
+  severity: HIGH
+  risk_points: 25
+
+password_spraying:
+  enabled: true
+  unique_users: 8
+  window_seconds: 300
+  severity: HIGH
+  risk_points: 25
+
+port_scan:
+  enabled: true
+  unique_ports: 20
+  window_seconds: 60
+  severity: MEDIUM
+  risk_points: 15
+
+suspicious_authentication:
+  enabled: true
+  severity: MEDIUM
+  risk_points: 15
+
+privilege_escalation:
+  enabled: true
+  severity: HIGH
+  risk_points: 20
+
+suspicious_process:
+  enabled: true
+  severity: HIGH
+  risk_points: 20
+
+large_data_transfer:
+  enabled: true
+  bytes_out_threshold: 5000000
+  severity: MEDIUM
+  risk_points: 15
+
+dns_anomaly:
+  enabled: true
+  query_count_threshold: 50
+  window_seconds: 60
+  severity: LOW
+  risk_points: 10

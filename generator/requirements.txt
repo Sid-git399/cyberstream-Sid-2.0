@@ -1,0 +1,6 @@
+pydantic==2.9.2
+pydantic-settings==2.5.2
+confluent-kafka==2.5.3
+click==8.1.7
+jsonschema==4.23.0
+pytest==8.3.3
